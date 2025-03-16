@@ -1,5 +1,5 @@
 import pytest
-from neural import *
+from src.neural import *
 
 
 def test_high_logistic_function():
