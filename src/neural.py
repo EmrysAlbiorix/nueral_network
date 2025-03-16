@@ -37,7 +37,7 @@ class OutputNeuron:
         t = target
         self.delta = -a * (1 - a) * (t - a)
         for unit, weight in zip(self.previous_layer[1:], self.weights[1:]):
-            unit.delta += None  # TODO Replace None with the correct formula
+            unit.delta += self.delta * weight  # TODO Replace None with the correct formula
 
     def update_weights(self):
         """
@@ -49,7 +49,7 @@ class OutputNeuron:
 
 class HiddenNeuron:
     # TODO You have to write this. It is almost identical to OutputNeuron, but it has a different
-    # update_delta method which doesn't take target as an argument.  You can copy and paste or
+    # update_delta method which doesn't take target as an argument. You can copy and paste or
     # use inheritance.
     pass
 
@@ -71,6 +71,7 @@ class Network:
         :param inputs: Values to use as activations of the input layer.
         :return: The predictions of the neurons in the output layer.
         """
+
         # TODO You have to write this
         pass
 
