@@ -37,7 +37,7 @@ class OutputNeuron:
         t = target
         self.delta = -a * (1 - a) * (t - a)
         for unit, weight in zip(self.previous_layer[1:], self.weights[1:]):
-            unit.delta += self.delta * weight  # TODO Replace None with the correct formula
+            unit.delta += self.delta * weight
 
     def update_weights(self):
         """
@@ -71,9 +71,17 @@ class Network:
         :param inputs: Values to use as activations of the input layer.
         :return: The predictions of the neurons in the output layer.
         """
+        # Pass the input data into the network
+        for i, input_value in enumerate(inputs):
+            self.layers[0][i].activation = input_value
 
-        # TODO You have to write this
-        pass
+        # Forward propagation step
+        for layer_index in range(1, len(self.layers)):
+            for neuron in self.layers[layer_index]:
+                neuron.update_activation()
+
+        # Return output layer activations
+        return [neuron.activation for neuron in self.layers[-1]]
 
     def reset_deltas(self):
         """
