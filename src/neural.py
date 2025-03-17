@@ -51,7 +51,37 @@ class HiddenNeuron:
     # TODO You have to write this. It is almost identical to OutputNeuron, but it has a different
     # update_delta method which doesn't take target as an argument. You can copy and paste or
     # use inheritance.
-    pass
+    def __init__(self, previous_layer):
+        self.activation = None
+        self.delta = None
+        self.previous_layer = [InputNeuron()] + previous_layer  # Add bias node
+        self.weights = [random.gauss(0, 1) for _ in self.previous_layer]
+
+    def update_activation(self):
+        """
+        Update the activation of this neuron, based on its previous layer and weights.
+        """
+        s = sum(self.weights[i] * self.previous_layer[i].activation for i in range(len(self.previous_layer)))
+        self.activation = logistic(s)
+
+    def update_delta(self, target):
+        """
+        Update the delta value for this neuron. Also, backpropagate delta values to neurons in
+        the previous layer.
+        :param target: The desired output of this neuron.
+        """
+        a = self.activation
+        t = target
+        self.delta = -a * (1 - a) * self.delta # Only difference from Output Neuron
+        for unit, weight in zip(self.previous_layer[1:], self.weights[1:]):
+            unit.delta += self.delta * weight
+
+    def update_weights(self):
+        """
+        Update the weights of this neuron.
+        """
+        for j in range(len(self.previous_layer)):
+            self.weights[j] += -LEARNING_RATE * self.previous_layer[j].activation * self.delta
 
 
 class Network:
@@ -87,8 +117,9 @@ class Network:
         """
         Set the deltas for all units to 0.
         """
-        # TODO You have to write this
-        pass
+        for current_layer in self.layers:
+            for unit in current_layer:
+                unit.delta = 0
 
     def update_deltas(self, targets):
         """
