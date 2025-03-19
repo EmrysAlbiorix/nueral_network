@@ -37,6 +37,9 @@ class OutputNeuron:
             # Multiply weight by activation and add to sum
             weighted_input = weight * activation
             s += weighted_input
+
+        # Alternate version of the above for loop, though I prefer the expanded version
+        # s = sum(self.weights[i] * self.previous_layer[i].activation for i in range(len(self.previous_layer)))
         self.activation = logistic(s)
 
     def update_delta(self, target):
