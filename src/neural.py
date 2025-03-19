@@ -1,6 +1,8 @@
 import math
 import random
 
+# Fionn Ensor-McDermott
+# Max Gorgan
 
 LEARNING_RATE = 1
 
