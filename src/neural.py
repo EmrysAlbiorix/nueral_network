@@ -26,7 +26,17 @@ class OutputNeuron:
         """
         Update the activation of this neuron, based on its previous layer and weights.
         """
-        s = sum(self.weights[i] * self.previous_layer[i].activation for i in range(len(self.previous_layer)))
+        s = 0
+        for i in range(len(self.previous_layer)):
+            # Get current weight
+            weight = self.weights[i]
+
+            # Get activation value from previous layer
+            activation = self.previous_layer[i].activation
+
+            # Multiply weight by activation and add to sum
+            weighted_input = weight * activation
+            s += weighted_input
         self.activation = logistic(s)
 
     def update_delta(self, target):
