@@ -61,13 +61,14 @@ class HiddenNeuron:
         s = sum(self.weights[i] * self.previous_layer[i].activation for i in range(len(self.previous_layer)))
         self.activation = logistic(s)
 
-    def update_delta(self):
+    def update_delta(self, target):
         """
         Update the delta value for this neuron. Also, backpropagate delta values to neurons in
         the previous layer.
         :param target: The desired output of this neuron.
         """
         a = self.activation
+        t = target # this is not being used, but we need to take in target because of how the other function is set up
         self.delta = a * (1 - a) * self.delta # Only difference from Output Neuron
         for unit, weight in zip(self.previous_layer[1:], self.weights[1:]):
             unit.delta += self.delta * weight
@@ -140,8 +141,10 @@ class Network:
         """
         Update the weights of all neurons.
         """
-        # TODO You have to write this
-        pass
+        # Update weights for all layers except input layer
+        for layer_index in range(1, len(self.layers)):
+            for neuron in self.layers[layer_index]:
+                neuron.update_weights()
 
     def train(self, inputs, targets):
         """
